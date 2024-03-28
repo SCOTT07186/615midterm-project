@@ -2,7 +2,10 @@
 title: "Midterm Project 677"
 author: "Ruicheng Zhang"
 date: "2024-03-25"
-output: pdf_document
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE, echo=FALSE}
@@ -16,9 +19,9 @@ library(ggplot2)
 library(gridExtra)
 ```
 
-#Order statistics
+# Order statistics
 
-##Uniform Distribution
+## Uniform Distribution
 1. **Scenario**: Drawing $n$ independent samples from a uniform distribution $U(a, b)$ to find the distribution of the $k$th order statistic, denoted as $X_{(k)}$.
 
 2. The PDF is defined as $f(x) = \frac{1}{b-a}$ for $a \leq x \leq b$.
@@ -26,13 +29,14 @@ library(gridExtra)
 3. **Distribution of Order Statistics**:
    The PDF of the $k$th order statistic is given by:
    $$f_{X_{(k)}}(x) = \frac{n!}{(k-1)!(n-k)!} \left( \frac{x-a}{b-a} \right)^{k-1} \left(1 - \frac{x-a}{b-a} \right)^{n-k} \frac{1}{b-a}$$
-### Minimum (First Order Statistic)
+   
+### Minimum
 
 The distribution of the minimum value \(X_{(1)}\) from a uniform distribution \(U(a, b)\) is:
 
 $$F_{X_{(1)}}(x) = 1 - (1 - \frac{x-a}{b-a})^n, \quad a \leq x \leq b$$
 
-### Maximum (Last Order Statistic)
+### Maximum
 
 The distribution of the maximum value \(X_{(n)}\) is:
 
@@ -44,8 +48,9 @@ $$F_{X_{(n)}}(x) = (\frac{x-a}{b-a})^n, \quad a \leq x \leq b$$
 - First Quartile: \(a + \frac{b-a}{4}\)
 - Third Quartile: \(a + 3\frac{b-a}{4}\)
 
-###Simulations
+### Simulations
 Generated 10,000 samples from a uniform distribution U(0,1), each with a sample size of 10, then calculated the values of the 1st, 3rd, 5th, 7th, and 10th order statistics, and plotted the distribution for each order statistic.
+
 ```{r, echo=FALSE}
 n_samples <- 1000
 sample_size <- 10
@@ -67,11 +72,9 @@ for (i in seq_along(order_statistics)) {
 }
 
 grid.arrange(grobs = plots, ncol = 3)
-
-
-
-
 ```
+
+
 ## Exponential Distribution
 
 1. **Scenario**: Drawing $n$ independent samples from an exponential distribution with rate parameter $\lambda$.
@@ -82,12 +85,12 @@ grid.arrange(grobs = plots, ncol = 3)
    The PDF of the $k$th order statistic is:
    $$f_{X_{(k)}}(x) = \frac{\lambda (\lambda x)^{k-1} e^{-\lambda x}}{(k-1)!} \left( \sum_{j=0}^{n-k} \frac{(\lambda x)^j}{j!} \right)$$
 
-### Minimum (First Order Statistic)
+### Minimum
 
 The minimum \(X_{(1)}\) follows an exponential distribution, and its probability density function (PDF) is:
     \[ f_{X_{(1)}}(x) = n\lambda e^{-\lambda x} (1 - e^{-\lambda x})^{n-1} \]
 
-### Maximum (Last Order Statistic)
+### Maximum
 
 The distribution of the maximum is more complex, often approached via numerical methods.
 
@@ -98,7 +101,7 @@ The distribution of the maximum is more complex, often approached via numerical 
 - The median \(Q(0.5)\) is:
     \[ Q(0.5) = -\frac{\log(0.5)}{\lambda} \]
 
-###Simulations
+### Simulations
 Generated 10,000 samples from an exponential distribution with rate parameter $\lambda =1$, each with a sample size of 10, then calculated the values of the 1st, 3rd, 5th, 7th, and 10th order statistics, and plotted the distribution for each order statistic.
 
 ```{r, echo=FALSE}
@@ -126,6 +129,8 @@ grid.arrange(grobs = plots, ncol = 3)
 
 
 ```
+
+
 ## Normal Distribution
 
 1. **Scenario**: Drawing $n$ independent samples from a normal distribution $N(\mu, \sigma^2)$.
@@ -147,7 +152,7 @@ No simple closed forms exist for the minimum or maximum; these are approached th
     where \(Z_q\) is the z-score corresponding to the \(q\)th percentile.
  - The quartiles \(Q(0.25)\) and \(Q(0.75)\), as well as any percentile \(Q\), can be calculated by finding the z-score \(Z_q\) and applying the normal distribution formula.
 
-###Simulations
+### Simulations
 Generated 10,000 samples from a standard normal distribution $N(0,1)$, each with a sample size of 10, then calculated the values of the 1st, 3rd, 5th, 7th, and 10th order statistics, and plotted the distribution for each order statistic.
 ```{r, echo=FALSE}
 n_samples <- 10000 
@@ -181,12 +186,12 @@ For the Normal Distribution:The normal distribution is symmetric and bell-shaped
 
 The distribution of order statistics from uniform samples is quite distinct and easily recognized due to its linear progression from the minimum to the maximum values within the bounded range of the distribution. This characteristic is unique compared to the skewed distributions of exponential order statistics and the symmetric, bell-shaped distributions of normal order statistics.
 
-#Exponential distribution
+# Exponential distribution
 
 ## Start
 
 The PDF of the Exponential Distribution is given by:
-$$ f(x, \lambda) = \lambda e^{-\lambda x} $$ for $x \geq 0$, and $f(x,\lambda) = 0$ for $x < 0$, where $\lambda > 0$ is the rate parameter of the distribution.\n
+$$ f(x, \lambda) = \lambda e^{-\lambda x} $$ for $x \geq 0$, and $f(x,\lambda) = 0$ for $x < 0$, where $\lambda > 0$ is the rate parameter of the distribution.
 
 ## CDF
 
@@ -247,17 +252,17 @@ The MGF of an exponential distribution with rate parameter $\lambda$ is:
 $$M_X(t) = \frac{\lambda}{\lambda - t}$$
 When considering the sum of independent exponential variates, say $X_1, X_2, ..., X_n$ each with the same rate parameter $\lambda$, the MGF of the sum $S = X_1 + X_2 + ... + X_n$ is the product of the individual MGFs, thanks to the independence:
 
-$$ M_S(t) = M_{X_1}(t) \times M_{X_2}(t) \times ... \times M_{X_n}(t) $$\n
+$$ M_S(t) = M_{X_1}(t) \times M_{X_2}(t) \times ... \times M_{X_n}(t) $$
 
 Given the MGF of each exponential variate:
-$$ M_S(t) = \left(\frac{\lambda}{\lambda - t}\right)^n $$\n
+$$ M_S(t) = \left(\frac{\lambda}{\lambda - t}\right)^n $$
 
 This MGF, $\left(\frac{\lambda}{\lambda - t}\right)^n$, is recognizable as the MGF of a Gamma distribution with shape parameter $n$ and rate parameter $\lambda$. This conclusion comes from the fact that the Gamma distribution generalizes the exponential distribution, where the exponential distribution is a special case of the Gamma distribution with the shape parameter $n = 1$.
 
 
 In simpler terms, the sum of $n$ independent exponential variates with the same rate $\lambda$ follows a Gamma distribution with parameters $n$ (shape) and $\lambda$ (rate). This tells us about the time you'd wait for $n$ events to happen in a process where events occur continuously and independently at a constant average rate.
 
-#Irrigation – Those green circles
+# Irrigation – Those green circles
 
 The aim is to calculate the 90% confidence interval for the average speed of the rotating arm at the outer wheels of an irrigation system, based on provided rotation times.
 
@@ -296,15 +301,14 @@ rotation_speed <-  2*pi*radius_feet /rotation_times
 
 mean_rotation_speed <- mean(rotation_speed)
 std_deviation <- sd(rotation_speed)
-
 n <- length(rotation_speed)
 df <- n - 1
 t_critical <- qt(0.95, df)
 margin_of_error <- t_critical * (std_deviation / sqrt(n))
 
 
-ci_lower_speed <- speed_feet_per_hour - margin_of_error
-ci_upper_speed <- speed_feet_per_hour + margin_of_error
+ci_lower_speed <- mean_rotation_speed - margin_of_error
+ci_upper_speed <- mean_rotation_speed+ margin_of_error
 
 cat("Mean Rotation Speed: ", mean_rotation_speed, "\n")
 cat("Standard Deviation: ", std_deviation, "\n")
@@ -312,8 +316,9 @@ cat(" Confidence Interval Lower Bound: ", ci_lower_speed, "\n")
 cat(" Confidence Interval Upper Bound: ", ci_upper_speed , "\n")
 ```
 
-The 90% confidence interval for the mean rotation speed of the rotating arm at the outer wheels, based on the given rotation times,is between 357.6658 feet per hour and 368.7082 feet per hour. The mean rotation time for the irrigation system is approximately 364.195 feet per hour, with a standard deviation of about 19.31709 feet per hour.
-Based on the 90% confidence interval calculation, we can be 90% confident that the speed of the rotating arm at the outer wheels is between 357.6658  feet per hour and 368.7082  feet per hour. 
+The 90% confidence interval for the mean rotation speed of the rotating arm at the outer wheels, based on the given rotation times,is between 358.6738   feet per hour and 369.7162  feet per hour. The mean rotation time for the irrigation system is approximately 364.195 feet per hour, with a standard deviation of about 19.31709 feet per hour.
+Based on the 90% confidence interval calculation, we can be 90% confident that the speed of the rotating arm at the outer wheels is between 358.6738   feet per hour and 369.7162  feet per hour. 
+
 ## Explanation
-The confidence interval for speed requires you to adjust the margin of error from the mean rotation time to a margin of error for speed. Since the relationship between time and speed is inversely proportional, the calculations involve using the square of the mean rotation time.With our analysis, we've determined that the mean rotation speed of the irrigation system's arm is 364.195 feet per hour. Accounting for variability in our data, signified by a standard deviation of 19.31709, we can confidently assert that the typical speed will generally fall between 357.6658 and 368.7082 feet per hour. This range is calculated with 90% confidence, which serves as a reliable guide for both farmers monitoring their irrigation systems and data scientists seeking to model agricultural processes.
+The confidence interval for speed requires you to adjust the margin of error from the mean rotation time to a margin of error for speed. Since the relationship between time and speed is inversely proportional, the calculations involve using the square of the mean rotation time.With our analysis, we've determined that the mean rotation speed of the irrigation system's arm is 364.195 feet per hour. Accounting for variability in our data, signified by a standard deviation of 19.31709, we can confidently assert that the typical speed will generally fall between 358.6738   feet per hour and 369.7162 feet per hour. This range is calculated with 90% confidence, which serves as a reliable guide for both farmers monitoring their irrigation systems and data scientists seeking to model agricultural processes.
 This research discovery holds significant implications. The identified mean rotation speed and its confidence interval provide a practical benchmark for monitoring the efficiency of their irrigation systems. We can compare their actual pivot speeds against this range to gauge if their equipment is operating within expected parameters, or if it requires maintenance or adjustment. 
